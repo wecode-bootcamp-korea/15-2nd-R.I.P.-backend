@@ -1,3 +1,5 @@
 from django.test import TestCase
 
-# Create your tests here.
+class Review(TestCase):
+    def setUp(self):
+
