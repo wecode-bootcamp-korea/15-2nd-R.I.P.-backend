@@ -17,7 +17,7 @@ class Review(TimeStampModel):
 
 class ReviewImage(models.Model):
     review = models.ForeignKey(Review, on_delete = models.CASCADE)
-    url    = models.URLField(max_length = 2000)
+    url    = models.URLField(max_length = 2000, null = True)
 
     class Meta:
         db_table = 'review_images'

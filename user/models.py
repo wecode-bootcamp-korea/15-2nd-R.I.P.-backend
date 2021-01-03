@@ -8,7 +8,7 @@ class Authentication(TimeStampModel):
     sms_number        = models.IntegerField(null = True)
     sms_request_count = models.IntegerField(default = 0)
     try_count         = models.IntegerField(default = 0)
-    is_authenticated  = models.BooleanField(default=False)
+    is_authenticated  = models.BooleanField(default = False)
 
     class Meta:
         db_table = 'authentications'
@@ -72,12 +72,13 @@ class HostWishList(models.Model):
 
 class User(TimeStampModel):
     email             = models.EmailField(unique = True)
-    nickname          = models.CharField(max_length= 20)
+    social_login_id   = models.CharField(max_length = 20, null = True)
+    nickname          = models.CharField(max_length = 20)
     account_type      = models.ForeignKey(AccountType, on_delete = models.PROTECT)
-    password          = models.CharField(max_length = 2000)
-    phone_number      = models.CharField(max_length = 45, unique = True)
-    profile_image     = models.URLField(max_length = 2000, null=True)
-    mileage           = models.DecimalField(max_digits = 10, decimal_places = 2, default=0)
+    password          = models.CharField(max_length = 2000, null = True)
+    phone_number      = models.CharField(max_length = 11, null = True)
+    profile_image     = models.URLField(max_length = 2000, null = True)
+    mileage           = models.DecimalField(max_digits = 10, decimal_places = 2, default = 0)
     coupon            = models.ManyToManyField(Coupon, through = UserCoupon, related_name = 'user_coupon_set')
     product_wish_list = models.ManyToManyField('product.Product', through = ProductWishList, related_name='product_wish_list_set')
     host_wish_list    = models.ManyToManyField('Host', through = HostWishList, related_name = 'host_wish_list_set')
