@@ -3,25 +3,35 @@ from django.db import models
 from rip.core import TimeStampModel
 
 
-class CategoryTop(models.Model):
+class CategoryGroupTop(models.Model):
     name = models.CharField(max_length = 45)
 
     class Meta:
-        db_table = 'category_tops'
+        db_table = 'category_group_tops'
 
 
-class CategoryMedium(models.Model):
-    name = models.CharField(max_length = 45)
-
-    class Meta:
-        db_table = 'category_mediums'
-
-
-class CategoryBottom(models.Model):
-    name = models.CharField(max_length = 45)
+class CategoryGroupMedium(models.Model):
+    name               = models.CharField(max_length = 45)
+    category_group_top = models.ForeignKey(CategoryGroupTop, on_delete = models.PROTECT)
 
     class Meta:
-        db_table = 'category_bottoms'
+        db_table = 'category_group_mediums'
+
+
+class CategoryGroupBottom(models.Model):
+    name                  = models.CharField(max_length = 45)
+    category_group_medium = models.ForeignKey(CategoryGroupMedium, on_delete = models.PROTECT)
+
+    class Meta:
+        db_table = 'category_group_bottoms'
+
+
+class Category(models.Model):
+    name                  = models.CharField(max_length = 45)
+    category_group_bottom = models.ForeignKey(CategoryGroupBottom, on_delete = models.PROTECT)
+
+    class Meta:
+        db_table = 'categories'
 
 
 class ProductType(models.Model):
@@ -45,15 +55,13 @@ class Product(TimeStampModel):
     price             = models.DecimalField(max_digits = 10, decimal_places = 2)
     discount          = models.ForeignKey(Discount, on_delete = models.PROTECT, null = True)
     host              = models.ForeignKey('user.Host', on_delete = models.PROTECT)
-    star_rating       = models.DecimalField(max_digits = 2, decimal_places = 1)
-    five_star_count   = models.IntegerField()
-    sales_rate        = models.IntegerField()
+    star_rating       = models.DecimalField(max_digits = 2, decimal_places = 1, default=0)
+    five_star_count   = models.IntegerField(default=0)
+    sales_rate        = models.IntegerField(default=0)
     activity_address  = models.CharField(max_length = 300)
-    gathering_address = models.CharField(max_length = 300)
+    gathering_address = models.CharField(max_length = 300, null = True)
     stock             = models.IntegerField()
-    category_top      = models.ForeignKey(CategoryTop   , on_delete = models.PROTECT)
-    category_medium   = models.ForeignKey(CategoryMedium, on_delete = models.PROTECT)
-    category_bottom   = models.ForeignKey(CategoryBottom, on_delete = models.PROTECT)
+    category          = models.ForeignKey(Category, on_delete = models.PROTECT)
     hit_count         = models.IntegerField(default = 0)
 
     class Meta :
