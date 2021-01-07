@@ -4,6 +4,7 @@ from rip.core import TimeStampModel
 
 
 class Review(TimeStampModel):
+    user              = models.ForeignKey('user.User', on_delete = models.SET_NULL, null=True)
     order             = models.ForeignKey('order.Order', on_delete = models.PROTECT)
     contents          = models.TextField()
     product           = models.ForeignKey('product.Product', on_delete = models.CASCADE)
