@@ -46,6 +46,7 @@ class ProductDetailTest(TestCase):
     def test_product_detail_get_success(self):
         response = self.client.get('/product/1')
 
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
                          {
                              'MESSAGE'       : 'SUCCESS',
@@ -77,7 +78,3 @@ class ProductDetailTest(TestCase):
                              }
                          }
         )
-
-        print(f"response.json(): {response.json()}")
-
-        self.assertEqual(response.status_code, 200)
