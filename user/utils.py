@@ -1,5 +1,5 @@
 import jwt
-import time, hmac, base64, hashlib, json
+import time, hmac, base64, hashlib, json, requests
 from functools import wraps
 
 from django.http import JsonResponse
@@ -66,3 +66,27 @@ def send_sms(phone_number, sms_number):
         return JsonResponse({'MESSAGE': 'SUCCESS'}, status=200)
 
     return JsonResponse({"MESSAGE": "NAVER COULD NOT SEND SMS"}, status=400)
+
+
+def kakao_access_token_required(func):
+    @wraps(func)
+    def decorated_function(self, request, *args, **kwargs):
+        try:
+            data               = json.loads(request.body)
+            kakao_access_token = data['kakao_access_token']
+
+            KAKAO_USER_INFO_REQUEST_URL = 'https://kapi.kakao.com/v2/user/me'
+            headers = {
+                'Authorization' : f'Bearer {kakao_access_token}',
+                'Content-type'  : 'application/x-www-form-urlencoded; charset=utf-8'
+            }
+            kakao_user_info_response = requests.get(KAKAO_USER_INFO_REQUEST_URL, headers = headers)
+
+            # request.kakao_user_info = json.loads(kakao_user_info_response.text)
+            request.kakao_user_info = kakao_user_info_response.json()
+
+        except KeyError as e:
+            return JsonResponse({"MESSAGE": "KEY ERROR => " + e.args[0]}, status=400)
+
+        return func(self, request, *args, **kwargs)
+    return decorated_function

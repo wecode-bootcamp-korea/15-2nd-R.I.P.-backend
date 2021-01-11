@@ -5,6 +5,7 @@ from django.test      import TestCase
 
 from user.models import Authentication, User, AccountType
 
+
 class SignUpTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -35,9 +36,12 @@ class SignUpTest(TestCase):
 
 
     def test_signup_success(self):
+
         response = self.client.post('/user/signup', json.dumps(self.new_user), content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
+
+        User.objects.all().delete()
 
 
     def test_signup_fail_with_poor_password(self):
@@ -120,3 +124,5 @@ class SignUpTest(TestCase):
 
         self.assertEqual(response.json(), {"MESSAGE": "KAKAO ACCOUNT EXISTS"})
         self.assertEqual(response.status_code, 400)
+
+
