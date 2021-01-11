@@ -5,6 +5,7 @@ from django.test      import TestCase
 
 from user.models import Authentication, User, AccountType
 
+
 class SignUpTest(TestCase):
     @classmethod
     def setUpTestData(cls):
