@@ -2,7 +2,6 @@ from django.db      import models
 
 from rip.core import TimeStampModel
 
-
 class Review(TimeStampModel):
     user              = models.ForeignKey('user.User', on_delete = models.SET_NULL, null=True)
     order             = models.ForeignKey('order.Order', on_delete = models.PROTECT)
@@ -75,3 +74,4 @@ class QuestionComment(TimeStampModel):
 
     class Meta:
         db_table = 'question_comments'
+

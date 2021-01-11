@@ -4,7 +4,7 @@ from functools import wraps
 
 from django.http import JsonResponse
 
-from my_settings import SECRET_KEY, ENCRYPTION_ALGORITHM, ACCESS_KEY_ID, SMS_SEND_PHONE_NUMBER, SMS_URL, SERVICE_SECRET_KEY, URI
+from my_settings import SECRET_KEY, ENCRYPTION_ALGORITHM, ACCESS_KEY_ID#, SMS_SEND_PHONE_NUMBER, SMS_URL, SERVICE_SECRET_KEY, URI
 from user.models import User
 
 
